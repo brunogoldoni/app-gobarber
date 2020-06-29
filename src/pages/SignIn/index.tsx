@@ -31,7 +31,9 @@ import {
 
 const SignIn: React.FC = () => {
     const navigation = useNavigation();
+
     const formRef = useRef<FormHandles>(null);
+    const passwordInputRef = useRef<TextInput>(null);
 
     const handleSignIn = useCallback((data: object) => {
         console.log(data);
@@ -57,14 +59,27 @@ const SignIn: React.FC = () => {
 
                         <Form ref={formRef} onSubmit={handleSignIn}>
                             <Input
-                                name="email"
                                 icon="mail"
+                                name="email"
+                                autoCorrect={false}
                                 placeholder="E-mail"
+                                returnKeyType="next"
+                                autoCapitalize="none"
+                                keyboardType="email-address"
+                                onSubmitEditing={() => {
+                                    passwordInputRef.current?.focus();
+                                }}
                             />
                             <Input
-                                name="password"
+                                ref={passwordInputRef}
                                 icon="lock"
+                                name="password"
+                                secureTextEntry
                                 placeholder="Senha"
+                                returnKeyType="send"
+                                onSubmitEditing={() => {
+                                    formRef.current?.submitForm();
+                                }}
                             />
                         </Form>
 
